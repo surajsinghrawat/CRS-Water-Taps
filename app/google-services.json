@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "768522167046",
+    "firebase_url": "https://crswatertaps.firebaseio.com",
+    "project_id": "crswatertaps",
+    "storage_bucket": "crswatertaps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:768522167046:android:84d222d01c576ce2",
+        "android_client_info": {
+          "package_name": "com.example.crswatertaps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "768522167046-f4p8k45bgocqd5p65li2ci4j9t9vmp8p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.crswatertaps",
+            "certificate_hash": "76e270d23abf229295489c7ce82baba5bb20ac6c"
+          }
+        },
+        {
+          "client_id": "768522167046-kkqpj9gi7efoks9fl78j3tjsig5vih13.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWdhPDGU4hebh-rtsbyKGVq3fwJP7Tgfk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "768522167046-kkqpj9gi7efoks9fl78j3tjsig5vih13.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
