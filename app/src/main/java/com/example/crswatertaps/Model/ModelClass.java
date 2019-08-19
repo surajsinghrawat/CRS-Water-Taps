@@ -4,6 +4,7 @@ public class ModelClass {
     private String id;
     private String imageUrl;
     private String name;
+    private int type;
 
     public ModelClass() {
     }
@@ -12,6 +13,14 @@ public class ModelClass {
         this.id = id;
         this.imageUrl = imageUrl;
         this.name = name;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getId() {

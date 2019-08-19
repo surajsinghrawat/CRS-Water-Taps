@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.crswatertaps.Activity.ProductActivity;
 import com.example.crswatertaps.Activity.SeriesActivity;
 import com.example.crswatertaps.Model.ModelClass;
 import com.example.crswatertaps.R;
@@ -32,6 +33,7 @@ public class CategoryFragment extends Fragment {
 
     private RecyclerView programingList;
     private RecyclerView.LayoutManager layoutManager;
+    private String modelId;
 
 
     public CategoryFragment() {
@@ -81,9 +83,16 @@ public class CategoryFragment extends Fragment {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent=new Intent(getActivity(), SeriesActivity.class);
-                        intent.putExtra("modelId",model.getId());
-                        startActivity(intent);
+                        if ( model.getType()==1){
+                            Intent intent = new Intent(getActivity(), SeriesActivity.class);
+                            intent.putExtra("modelId", model.getId());
+                            startActivity(intent);
+                        }else if (model.getType()==2){
+
+                            Intent intent=new Intent(getActivity(), ProductActivity.class);
+                            intent.putExtra("modelId", model.getId());
+                            startActivity(intent);
+                        }
                     }
                 });
             }
@@ -101,6 +110,7 @@ public class CategoryFragment extends Fragment {
 
     @Override
     public void onStop() {
+
         super.onStop();
         adapter.stopListening();
     }
