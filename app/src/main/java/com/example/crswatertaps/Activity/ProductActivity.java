@@ -34,6 +34,7 @@ public class ProductActivity extends AppCompatActivity {
    private RecyclerView.LayoutManager layoutManager;
     private String modelId;
     private String seriesId;
+    private int type;
 
 
     @Override
@@ -44,18 +45,25 @@ public class ProductActivity extends AppCompatActivity {
 
         modelId = getIntent().getStringExtra("modelId");
         seriesId = getIntent().getStringExtra("seriesId");
+        type=getIntent().getIntExtra("type",1);
 
         productlist= findViewById(R.id.productList);
         layoutManager=new GridLayoutManager(this,1);
         productlist.setHasFixedSize(true);
         productlist.setLayoutManager(layoutManager);
 
+        if (type==1) {
+            query = FirebaseDatabase.getInstance()
+                    .getReference()
+                    .child("product")
+                    .orderByChild("typeId").equalTo(modelId + "#" + seriesId);
+        }else if (type==2){
+            query = FirebaseDatabase.getInstance()
+                    .getReference()
+                    .child("product")
+                    .orderByChild("typeId").equalTo(modelId);
 
-        query = FirebaseDatabase.getInstance()
-                .getReference()
-                .child("product")
-        .orderByChild("typeId").equalTo(modelId+"#"+seriesId);
-
+        }
         FirebaseRecyclerOptions<ProductModel> options =
                 new FirebaseRecyclerOptions.Builder<ProductModel>()
                         .setQuery(query, ProductModel.class)

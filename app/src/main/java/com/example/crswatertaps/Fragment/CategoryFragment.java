@@ -91,6 +91,7 @@ public class CategoryFragment extends Fragment {
 
                             Intent intent=new Intent(getActivity(), ProductActivity.class);
                             intent.putExtra("modelId", model.getId());
+                            intent.putExtra("type",model.getType());
                             startActivity(intent);
                         }
                     }

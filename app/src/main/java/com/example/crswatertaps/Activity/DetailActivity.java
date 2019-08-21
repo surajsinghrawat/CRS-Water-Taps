@@ -17,7 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class DetailActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
-    TextView textView;
+    TextView textView,txt1;
     TextView textView1;
     TextView textView2;
     TextView textView3;
@@ -40,8 +40,13 @@ public class DetailActivity extends AppCompatActivity {
         textView.setText(modelName);
 //SERIES
         final String seriesName=getIntent().getStringExtra("seriesName");
-        textView1=findViewById(R.id.series1);
-        textView1.setText(seriesName);
+        if(getIntent().getStringExtra("seriesName")!=null) {
+            textView1 = findViewById(R.id.series1);
+            txt1=findViewById(R.id.txt1);
+            textView1.setVisibility(View.VISIBLE);
+            txt1.setVisibility(View.VISIBLE);
+            textView1.setText(seriesName);
+        }
 //PRICE
         final long price=getIntent().getLongExtra("price",0L);
         textView2=findViewById(R.id.price);
@@ -65,6 +70,7 @@ public class DetailActivity extends AppCompatActivity {
                 cartItem.setQuantity(quantity);
                 cartItem.setModelId(modelName);
                 cartItem.setSeriesId(seriesName);
+
 
                 mDatabase.child("cart").child("asd").child(id).setValue(cartItem);
             }
