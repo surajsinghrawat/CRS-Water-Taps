@@ -14,7 +14,7 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
-        android:background="#000000">
+        android:background="@color/colorMain">
 
 
     </android.support.v7.widget.RecyclerView>

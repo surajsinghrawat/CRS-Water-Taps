@@ -1,6 +1,7 @@
 package com.example.crswatertaps.ViewHolder;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.crswatertaps.Model.CartModel;
 import com.example.crswatertaps.R;
+import com.squareup.picasso.Picasso;
 
 public class CartViewHolder extends RecyclerView.ViewHolder {
     ImageView image;
@@ -31,6 +33,8 @@ public class CartViewHolder extends RecyclerView.ViewHolder {
         series.setText(data.getSeriesId());
         price.setText(data.getPrice()+"");
         quantity.setText(data.getQuantity()+"");
+       // image.setImageDrawable(Drawable.createFromPath(data.getImageUrl()));
+        Picasso.with(image.getContext()).load(data.getImageUrl()).into(image);
 
 
 

@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.crswatertaps.R;
+import com.squareup.picasso.Picasso;
 
 public class SeriesViewHolder extends RecyclerView.ViewHolder {
     private ImageView image;
@@ -21,7 +22,7 @@ public class SeriesViewHolder extends RecyclerView.ViewHolder {
     public void setRow(String name,String imageUrl){
 
         title.setText(name);
-
+        Picasso.with(image.getContext()).load(imageUrl).into(image);
 
     }
 

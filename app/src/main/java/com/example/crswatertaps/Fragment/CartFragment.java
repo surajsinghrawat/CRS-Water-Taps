@@ -81,14 +81,14 @@ public class CartFragment extends Fragment {
                 // Bind the Chat object to the ChatHolder
                 // ...
                 holder.setRow(model);
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent=new Intent(getActivity(), SeriesActivity.class);
-                        intent.putExtra("modelId",model.getId());
-                        startActivity(intent);
-                    }
-                });
+//                holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Intent intent=new Intent(getActivity(), SeriesActivity.class);
+//                        intent.putExtra("modelId",model.getId());
+//                        startActivity(intent);
+//                    }
+//                });
             }
         };
         // Inflate the layout for this fragment
