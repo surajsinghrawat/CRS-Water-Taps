@@ -122,7 +122,8 @@
                 android:layout_toRightOf="@id/imageView"
                 android:text="@string/remove"
                 android:background="@color/red"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:textSize="12sp"/>
 
         </RelativeLayout>
 

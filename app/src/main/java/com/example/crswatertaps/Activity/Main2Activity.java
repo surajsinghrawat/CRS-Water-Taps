@@ -20,6 +20,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.crswatertaps.Fragment.CartFragment;
 import com.example.crswatertaps.Fragment.CategoryFragment;
+import com.example.crswatertaps.Fragment.MoreOptionFragment;
 import com.example.crswatertaps.R;
 
 public class Main2Activity extends AppCompatActivity {
@@ -54,6 +55,9 @@ public class Main2Activity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_checkout:
         //            mTextMessage.setText(R.string.title_Checkout);
+                    changeFragment(2);
+                    bottomTabIndexNo=2;
+                    setupActionBar(getNavTitle(bottomTabIndexNo));
                     return true;
             }
             return false;
@@ -104,9 +108,9 @@ public class Main2Activity extends AppCompatActivity {
         } else if (position == 1) {
             newFragment = new CartFragment();
         }
-//        else {
-//            newFragment = new MoreFragment();
-//       }
+        else if(position==2){
+            newFragment = new MoreOptionFragment();
+       }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -122,8 +126,8 @@ public class Main2Activity extends AppCompatActivity {
                 return "Model";
             case 1:
                 return "Cart";
-//            case 2:
-//                return "Royal Model";
+            case 2:
+                return "More Option";
 
             default:
                 return "Not Available";

@@ -10,7 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.example.crswatertaps.Activity.PlaceOrder;
 import com.example.crswatertaps.Activity.SeriesActivity;
 import com.example.crswatertaps.Adapter.CartAdapter;
 import com.example.crswatertaps.Model.CartModel;
@@ -36,6 +38,7 @@ public class CartFragment extends Fragment {
 
     private FirebaseRecyclerAdapter adapter;
     private Query query;
+    private Button placeOrdeBtn;
 
 
 
@@ -48,8 +51,18 @@ public class CartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+
         View layout =  inflater.inflate(R.layout.fragment_cart, container, false);
         // Inflate the layout for this fragment
+        placeOrdeBtn=layout.findViewById(R.id.placeOrder);
+        placeOrdeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getActivity(),PlaceOrder.class);
+                startActivity(intent);
+            }
+        });
         cartier =layout.findViewById(R.id.cartitem);
         layoutManager1=new GridLayoutManager(getActivity(),1);
         cartier.setLayoutManager(layoutManager1);
@@ -93,7 +106,9 @@ public class CartFragment extends Fragment {
         };
         // Inflate the layout for this fragment
         cartier.setAdapter(adapter);
+
         return layout;
+
     }
 
     public void onStart() {
