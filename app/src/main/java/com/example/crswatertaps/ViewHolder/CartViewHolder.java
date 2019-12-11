@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import com.squareup.picasso.Picasso;
 public class CartViewHolder extends RecyclerView.ViewHolder {
     ImageView image;
     private TextView model,series,price,quantity;
+    public Button removeButton;
 
 
     //String[] dish;
@@ -25,6 +27,7 @@ public class CartViewHolder extends RecyclerView.ViewHolder {
         series = itemView.findViewById(R.id.series1);
         price = itemView.findViewById(R.id.price);
         quantity = itemView.findViewById(R.id.quantity);
+        removeButton = itemView.findViewById(R.id.btnRemove);
     }
 
     public void setRow(CartModel data){

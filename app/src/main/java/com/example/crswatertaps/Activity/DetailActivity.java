@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 
 import com.example.crswatertaps.Model.CartModel;
 import com.example.crswatertaps.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -27,6 +30,8 @@ public class DetailActivity extends AppCompatActivity {
     ImageView imageView;
     EditText quantityEditText;
     Button button;
+    FirebaseAuth mAuth;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +61,15 @@ public class DetailActivity extends AppCompatActivity {
         final long price=getIntent().getLongExtra("price",0L);
         textView2=findViewById(R.id.price);
         textView2.setText(price+"");
+        final String userId=getIntent().getStringExtra("userID");
+
 
  //
 
 // ...
+        FirebaseUser firebaseUser=mAuth.getInstance().getCurrentUser();
+        userID=firebaseUser.getUid();
+        Log.d("USERID in add",userID);
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         quantityEditText=findViewById(R.id.Quantity);
@@ -79,7 +89,7 @@ public class DetailActivity extends AppCompatActivity {
                 cartItem.setImageUrl(img);
 
 
-                mDatabase.child("cart").child("asd").child(id).setValue(cartItem);
+                mDatabase.child("cart").child(userID).child(id).setValue(cartItem);
                 Toast.makeText(DetailActivity.this, "Successfully Add ", Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(DetailActivity.this,Main2Activity.class);
                 startActivity(intent);

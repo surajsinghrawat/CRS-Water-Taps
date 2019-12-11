@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private Button login;
     private Button register;
     private FirebaseAuth mAuth;
-
+String userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +37,18 @@ public class MainActivity extends AppCompatActivity {
         email = (EditText)findViewById(R.id.etemail);
         Password = (EditText)findViewById(R.id.etpass);
 
+        FirebaseAuth.AuthStateListener authStateListener=new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
+                userID =firebaseUser.getUid();
+                Log.d("USERID",userID);
+            }
+        };
 
+        final FirebaseUser firebaseUser=mAuth.getCurrentUser();
+        userID=firebaseUser.getUid();
+        Log.d("USERID",userID);
 
         login = (Button)findViewById(R.id.btnLogin);
         login.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Toast.makeText(MainActivity.this,"Sucessfulll main",Toast.LENGTH_LONG).show();
                                     Intent intent= new Intent(MainActivity.this, Main2Activity.class);
+                                    intent.putExtra("userID",firebaseUser.getUid());
                                     startActivity(intent);
                                     finish();
                                 } else {

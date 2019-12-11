@@ -22,6 +22,8 @@ import com.example.crswatertaps.Fragment.CartFragment;
 import com.example.crswatertaps.Fragment.CategoryFragment;
 import com.example.crswatertaps.Fragment.MoreOptionFragment;
 import com.example.crswatertaps.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class Main2Activity extends AppCompatActivity {
     //private TextView mTextMessage;
@@ -33,6 +35,8 @@ public class Main2Activity extends AppCompatActivity {
 
     private RecyclerView programingList;
     private RecyclerView.LayoutManager layoutManager;
+    String userID;
+    FirebaseAuth mAuth;
 
     private static int bottomTabIndexNo;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -68,6 +72,7 @@ public class Main2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

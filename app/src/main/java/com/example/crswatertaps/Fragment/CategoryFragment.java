@@ -46,8 +46,9 @@ public class CategoryFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View layout =  inflater.inflate(R.layout.fragment_category, container, false);
-
+//        View carLayout =  inflater.inflate(R.layout.cart_item, container, false);
         programingList= layout.findViewById(R.id.programingList);
+
         layoutManager=new GridLayoutManager(getActivity(),2);
 
         programingList.setHasFixedSize(true);
