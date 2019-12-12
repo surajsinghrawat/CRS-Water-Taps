@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.crswatertaps.Activity.Main2Activity;
+import com.example.crswatertaps.Activity.MainActivity;
 import com.example.crswatertaps.Model.MoreOption;
 import com.example.crswatertaps.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -59,9 +60,9 @@ public class MoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         final int GET_NEW_CARD = 2;
 
                         break;
-                    case "Logout":
+                    case "Log":
                         FirebaseAuth.getInstance().signOut();
-                        Intent intent = new Intent(context.getApplicationContext(), Main2Activity.class);
+                        Intent intent = new Intent(context.getApplicationContext(), MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                         break;

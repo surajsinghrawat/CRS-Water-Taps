@@ -45,7 +45,7 @@ public class CartFragment extends Fragment {
     private FirebaseRecyclerAdapter adapter;
     private Query query;
     private Button placeOrdeBtn;
-    private  Button removeBtn;
+   // private  Button removeBtn;
     private DatabaseReference mDatabase;
 
     String userID;
@@ -68,7 +68,7 @@ public class CartFragment extends Fragment {
         // Inflate the layout for this fragment
         placeOrdeBtn = layout.findViewById(R.id.placeOrder);
 
-        removeBtn =  itemLayout.findViewById(R.id.btnRemove);
+        //removeBtn =  itemLayout.findViewById(R.id.btnRemove);
 
         placeOrdeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,14 +139,14 @@ public class CartFragment extends Fragment {
             }
 
         };
-        removeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String val="ok";
-                Log.d(val, "onClick: test value");
-                Toast.makeText(view.getContext(),"Remove Item", Toast.LENGTH_LONG).show();
-            }
-        });
+//        removeBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String val="ok";
+//                Log.d(val, "onClick: test value");
+//                Toast.makeText(view.getContext(),"Remove Item", Toast.LENGTH_LONG).show();
+//            }
+//        });
         // Inflate the layout for this fragment
         cartier.setAdapter(adapter);
 

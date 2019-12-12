@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    public boolean hasSession = false;
     private TextView email;
     private TextView Password;
     private Button login;
@@ -46,10 +46,11 @@ String userID;
             }
         };
 
-        final FirebaseUser firebaseUser=mAuth.getCurrentUser();
-        userID=firebaseUser.getUid();
-        Log.d("USERID",userID);
-
+//        final FirebaseUser firebaseUser=mAuth.getCurrentUser();
+//        if (firebaseUser != null) {
+//            userID = firebaseUser.getUid();
+//            Log.d("USERID", userID);
+//        }else Toast.makeText(this, "firebaseUser Is Null", Toast.LENGTH_SHORT).show();
         login = (Button)findViewById(R.id.btnLogin);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +64,12 @@ String userID;
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
+
                                     Toast.makeText(MainActivity.this,"Sucessfulll main",Toast.LENGTH_LONG).show();
+                                    final FirebaseUser firebaseUser=mAuth.getCurrentUser();
+                                    assert firebaseUser != null;
+                                    userID = firebaseUser.getUid();
+                                    Log.d("USERID", userID);
                                     Intent intent= new Intent(MainActivity.this, Main2Activity.class);
                                     intent.putExtra("userID",firebaseUser.getUid());
                                     startActivity(intent);
@@ -119,6 +125,23 @@ String userID;
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseUser currentUser=mAuth.getCurrentUser();
+        if (currentUser!=null){
+            toDashboard();
+        }else {
+           Log.d("no user","no user");
+        }
+    }
+
+    private void toDashboard(){
+        Intent intent=new Intent(MainActivity.this, Main2Activity.class);
+        startActivity(intent);
+        finish();
+    }
 
     private void setupActionBar(String title) {
         ActionBar actionBar = getSupportActionBar();
