@@ -57,7 +57,7 @@ public class Main2Activity extends AppCompatActivity {
                     bottomTabIndexNo = 1;
                     setupActionBar(getNavTitle(bottomTabIndexNo));
                     return true;
-                case R.id.navigation_checkout:
+                case R.id.navigation_more:
         //            mTextMessage.setText(R.string.title_Checkout);
                     changeFragment(2);
                     bottomTabIndexNo=2;

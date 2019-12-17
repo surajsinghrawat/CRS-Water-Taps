@@ -40,7 +40,6 @@ public class MoreOptionFragment extends Fragment {
 
             String title[] = {
                     "Profile",
-                    "Favourites",
                     "About Us",
                     "Contact Us",
                     "App Settings",
@@ -51,7 +50,6 @@ public class MoreOptionFragment extends Fragment {
 
             String description[] = {
                     "View Profile",
-                    "View Favourites",
                     "About Us",
                     "Contact Us",
                     "App Settings",
@@ -62,7 +60,6 @@ public class MoreOptionFragment extends Fragment {
 
             String code[] = {
                     "pro",
-                    "fav",
                     "abo",
                     "con",
                     "app",
@@ -72,10 +69,13 @@ public class MoreOptionFragment extends Fragment {
             };
 
             int icons[] = {
-
-                R.drawable.ic_dashboard_black_24dp,
-
-
+                    R.drawable.ic_action_name,
+                    R.drawable.ic_action_about,
+                    R.drawable.ic_action_contact,
+                    R.drawable.ic_action_settings,
+                    R.drawable.ic_action_feedback,
+                    R.drawable.ic_action_share,
+                    R.drawable.ic_action_logout,
             };
 
             result = new ArrayList<MoreOption>();

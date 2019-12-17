@@ -3,7 +3,7 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_home">Home</string>
     <string name="title_Cart">Cart</string>
-    <string name="title_Checkout">Checkout</string>
+    <string name="title_More">More</string>
     <string name="model">Model</string>
     <string name="series">Series</string>
     <string name="price">Price</string>

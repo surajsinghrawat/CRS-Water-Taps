@@ -1,7 +1,9 @@
 package com.example.crswatertaps.Adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,10 +63,7 @@ public class MoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                         break;
                     case "Log":
-                        FirebaseAuth.getInstance().signOut();
-                        Intent intent = new Intent(context.getApplicationContext(), MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent);
+                        DailogBox();
                         break;
                     default:
                         makeToast("Coming Soon");
@@ -124,5 +123,25 @@ public class MoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 //            this.moreOptionIcon.setImageResource(data.getImage());
 
         }
+    }
+    private void DailogBox(){
+        final AlertDialog.Builder alertDialog= new AlertDialog.Builder(context);
+        alertDialog.setMessage("Are You Sure, You Want To Logout");
+        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(context.getApplicationContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        alertDialog.create();
+        alertDialog.show();
     }
 }

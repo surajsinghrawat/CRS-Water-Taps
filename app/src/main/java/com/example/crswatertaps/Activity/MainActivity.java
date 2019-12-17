@@ -1,5 +1,6 @@
 package com.example.crswatertaps.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
@@ -55,6 +56,7 @@ String userID;
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final ProgressDialog dialog = ProgressDialog.show(MainActivity.this, "", "Logging in");
                 String emil=email.getText().toString().trim();
                 String pass= Password.getText().toString().trim();
 
@@ -63,6 +65,7 @@ String userID;
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
+                                    dialog.dismiss();
                                     // Sign in success, update UI with the signed-in user's information
 
                                     Toast.makeText(MainActivity.this,"Sucessfulll main",Toast.LENGTH_LONG).show();
