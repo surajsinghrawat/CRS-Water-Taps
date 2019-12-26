@@ -1,5 +1,7 @@
 package com.example.crswatertaps.Activity;
 
+import android.app.ProgressDialog;
+import android.app.Service;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +41,7 @@ public class SeriesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_series);
         setupActionBar("Series");
+        final ProgressDialog dialog = ProgressDialog.show(SeriesActivity.this, "", "");
         modelId = getIntent().getStringExtra("modelId");
         seriesList=findViewById(R.id.seriesList);
         layoutManager=new GridLayoutManager(this,2);
@@ -60,6 +63,7 @@ public class SeriesActivity extends AppCompatActivity {
             public SeriesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 // Create a new instance of the ViewHolder, in this case we are using a custom
                 // layout called R.layout.message for each item
+                dialog.dismiss();
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.list_item_activity, parent, false);
 

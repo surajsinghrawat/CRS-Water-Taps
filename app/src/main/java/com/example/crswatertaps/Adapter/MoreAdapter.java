@@ -12,8 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.crswatertaps.Activity.Main2Activity;
 import com.example.crswatertaps.Activity.MainActivity;
+import com.example.crswatertaps.Activity.ProfileActivity;
+import com.example.crswatertaps.CommonAction.CustomDialogClass;
 import com.example.crswatertaps.Model.MoreOption;
 import com.example.crswatertaps.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,21 +50,40 @@ public class MoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             @Override
             public void onClick(View view) {
                 switch (item.getCode()) {
-                    case "adminMeeting":
-                        openMeetingAdmin();
+                    case "pro":
+                        userProfile();
                         break;
-                    case "adminSecurity":
-                        openSecurityAdmin();
-                        break;
-                    case "adminEvent":
-                        openEventAdmin();
-                        break;
-                    case "pay":
-                        final int GET_NEW_CARD = 2;
+                    case "abo":
 
                         break;
+                    case "con":
+                        makeToast("coming");
+                        break;
+                    case "app":
+                        makeToast("coming soon");
+                        break;
+                    case "fee":
+                        makeToast("Coming soon");
+                        break;
+                    case "sha":
+                        shareApp();
+                        break;
                     case "Log":
-                        DailogBox();
+                        CustomDialogClass.showDialog(context, "Are You Sure, You Want To Logout", "Ok", "Cancel", new CustomDialogClass.WarningResponse() {
+                            @Override
+                            public void onPositive() {
+                                FirebaseAuth.getInstance().signOut();
+                                Intent intent = new Intent(context.getApplicationContext(), MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(intent);
+                            }
+
+                            @Override
+                            public void onNegative() {
+
+                            }
+                        });
+                       // DailogBox();
                         break;
                     default:
                         makeToast("Coming Soon");
@@ -143,5 +163,28 @@ public class MoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         });
         alertDialog.create();
         alertDialog.show();
+    }
+
+    private void shareApp(){
+        Intent intent=new Intent(Intent.ACTION_SEND);
+
+        final String aapPackagName=context.getApplicationContext().getPackageName();
+        String strAppLink="";
+        try{
+            strAppLink="http://play.googal.com/store/app/details?id="+aapPackagName;
+        }catch (android.content.ActivityNotFoundException anfe){
+            strAppLink="http://play.googal.com/store/app/details?id="+aapPackagName;
+        }
+        intent.setType("text/link");
+        String shareBody="Hey! Download The AmaZing App"+"\n"+""+strAppLink;
+        String shareSub="App NAME/TITLE";
+        intent.putExtra(Intent.EXTRA_SUBJECT,shareSub);
+        intent.putExtra(Intent.EXTRA_TEXT,shareBody);
+        context.startActivity(Intent.createChooser(intent,"Share Using"));
+    }
+
+    private void userProfile(){
+        Intent intent=new Intent(context, ProfileActivity.class);
+        context.startActivity(intent);
     }
 }

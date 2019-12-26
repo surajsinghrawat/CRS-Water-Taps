@@ -5,12 +5,14 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.crswatertaps.CommonAction.CustomDialogClass;
 import com.example.crswatertaps.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,7 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_newregister);
 
         firebaseAuth=FirebaseAuth.getInstance();
 
@@ -52,6 +54,20 @@ public class RegisterActivity extends AppCompatActivity {
                                 startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                             }else
                             {
+                                CustomDialogClass.showWarning(RegisterActivity.this, "Registration failed."+"Enter Valid Details", "CANCEL", new CustomDialogClass.WarningResponse() {
+                                    @Override
+                                    public void onPositive() {
+                                        UserName.setText("");
+                                        PassWord.setText("");
+                                        Email.setText("");
+                                        UserName.requestFocus();
+                                    }
+
+                                    @Override
+                                    public void onNegative() {
+
+                                    }
+                                });
                                 Toast.makeText(RegisterActivity.this,"SinUp UnSuccessful",Toast.LENGTH_SHORT).show();
                             }
 
@@ -62,24 +78,28 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        userLogin = (TextView) findViewById(R.id.tvBack);
+
         userLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(RegisterActivity.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
 
     private Boolean validate(){
-        Boolean result=false;
+        boolean result=false;
 
         String name = UserName.getText().toString();
         String password = PassWord.getText().toString();
         String email = Email.getText().toString();
 
-        if (name.isEmpty() || password.isEmpty() || email.isEmpty()){
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(password) || TextUtils.isEmpty(email)){
+            UserName.setError("Required.");
+            PassWord.setError("Required."+"@gmail.com");
+            Email.setError("Required.");
             Toast.makeText(this,"Please Enter All The Details",Toast.LENGTH_SHORT).show();
         }else {
             result = true;
@@ -92,7 +112,7 @@ public class RegisterActivity extends AppCompatActivity {
         PassWord = (EditText)findViewById(R.id.etPassWord);
         Email = (EditText)findViewById(R.id.etEmail);
         regButton = (Button) findViewById(R.id.btnRegister);
-        userLogin = (TextView) findViewById(R.id.tvBack);
+        userLogin = (Button) findViewById(R.id.tvBack);
     }
 
     private void setupActionBar(String title) {
@@ -101,5 +121,7 @@ public class RegisterActivity extends AppCompatActivity {
             actionBar.setTitle(title);
         }
     }
+
+
 
 }

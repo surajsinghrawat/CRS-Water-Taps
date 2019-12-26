@@ -1,6 +1,7 @@
 package com.example.crswatertaps.Fragment;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -62,7 +63,7 @@ public class CartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
+        final ProgressDialog dialog = ProgressDialog.show(getContext(), "", "");
         View layout =  inflater.inflate(R.layout.fragment_cart, container, false);
         View itemLayout =  inflater.inflate(R.layout.cart_item, container, false);
         // Inflate the layout for this fragment
@@ -106,6 +107,7 @@ public class CartFragment extends Fragment {
             public CartViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 // Create a new instance of the ViewHolder, in this case we are using a custom
                 // layout called R.layout.message for each item
+                dialog.dismiss();
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.cart_item, parent, false);
 

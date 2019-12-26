@@ -1,5 +1,6 @@
 package com.example.crswatertaps.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
@@ -42,7 +43,7 @@ public class ProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
         setupActionBar("Product");
-
+        final ProgressDialog dialog = ProgressDialog.show(ProductActivity.this, "", "");
         modelId = getIntent().getStringExtra("modelId");
         seriesId = getIntent().getStringExtra("seriesId");
         type=getIntent().getIntExtra("type",1);
@@ -94,6 +95,7 @@ public class ProductActivity extends AppCompatActivity {
             public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 // Create a new instance of the ViewHolder, in this case we are using a custom
                 // layout called R.layout.message for each item
+                dialog.dismiss();
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.list_item_activity, parent, false);
 

@@ -21,5 +21,8 @@
     <string name="password">Password</string>
     <string name="register">Register</string>
     <string name="back">Back To Login</string>
+    <string name="login">Login</string>
+    <string name="create">CREATE NEW ACCOUNT</string>
+    <string name="msg">Alert Message</string>
 
 </resources>

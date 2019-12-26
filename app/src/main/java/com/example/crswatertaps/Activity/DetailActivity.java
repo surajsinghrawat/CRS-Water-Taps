@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -77,23 +78,27 @@ public class DetailActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int quantity=Integer.parseInt(quantityEditText.getText().toString());
-               int price1= (int) (quantity*price);
-                CartModel cartItem=new CartModel();
-                cartItem.setName(name);
-                cartItem.setId(id);
-                cartItem.setPrice(price1);
-                cartItem.setQuantity(quantity);
-                cartItem.setModelId(modelName);
-                cartItem.setSeriesId(seriesName);
-                cartItem.setImageUrl(img);
+                if (validate()) {
+                    int quantity = Integer.parseInt(quantityEditText.getText().toString());
+                    int price1 = (int) (quantity * price);
 
 
-                mDatabase.child("cart").child(userID).child(id).setValue(cartItem);
-                Toast.makeText(DetailActivity.this, "Successfully Add ", Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(DetailActivity.this,Main2Activity.class);
-                startActivity(intent);
-                finish();
+                    CartModel cartItem = new CartModel();
+                    cartItem.setName(name);
+                    cartItem.setId(id);
+                    cartItem.setPrice(price1);
+                    cartItem.setQuantity(quantity);
+                    cartItem.setModelId(modelName);
+                    cartItem.setSeriesId(seriesName);
+                    cartItem.setImageUrl(img);
+
+
+                    mDatabase.child("cart").child(userID).child(id).setValue(cartItem);
+                    Toast.makeText(DetailActivity.this, "Successfully Add ", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(DetailActivity.this, Main2Activity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
     }
@@ -104,5 +109,15 @@ public class DetailActivity extends AppCompatActivity {
 
             actionBar.setTitle(name);
         }
+    }
+    private boolean validate(){
+        boolean result=false;
+    String quantity=quantityEditText.getText().toString();
+        if (TextUtils.isEmpty(quantity)){
+            quantityEditText.setError("Required.");
+        }else {
+         result=true;
+        }
+        return result;
     }
 }

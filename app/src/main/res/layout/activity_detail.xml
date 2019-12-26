@@ -168,6 +168,7 @@ android:background="@color/colorMain"
             android:textColor="#0C0C0C"
             android:textSize="20dp"
             android:textStyle="bold"
+            android:background="@drawable/mybutton"
             android:textAlignment="center"/>
 
     </LinearLayout>

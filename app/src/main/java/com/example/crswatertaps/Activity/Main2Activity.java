@@ -18,12 +18,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.crswatertaps.CommonAction.NetworkCheck;
 import com.example.crswatertaps.Fragment.CartFragment;
 import com.example.crswatertaps.Fragment.CategoryFragment;
 import com.example.crswatertaps.Fragment.MoreOptionFragment;
 import com.example.crswatertaps.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.io.IOException;
 
 public class Main2Activity extends AppCompatActivity {
     //private TextView mTextMessage;
@@ -72,8 +75,6 @@ public class Main2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-
-
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 

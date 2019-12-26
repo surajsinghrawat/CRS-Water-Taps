@@ -1,6 +1,7 @@
 package com.example.crswatertaps.Fragment;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,7 +15,6 @@ import com.example.crswatertaps.Activity.ProductActivity;
 import com.example.crswatertaps.Activity.SeriesActivity;
 import com.example.crswatertaps.Model.ModelClass;
 import com.example.crswatertaps.R;
-import com.example.crswatertaps.Adapter.programingAdapter;
 import com.example.crswatertaps.ViewHolder.ModelViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -42,9 +42,9 @@ public class CategoryFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-
+        final ProgressDialog dialog = ProgressDialog.show(getContext(), "", "");
         View layout =  inflater.inflate(R.layout.fragment_category, container, false);
 //        View carLayout =  inflater.inflate(R.layout.cart_item, container, false);
         programingList= layout.findViewById(R.id.programingList);
@@ -70,6 +70,7 @@ public class CategoryFragment extends Fragment {
             public ModelViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 // Create a new instance of the ViewHolder, in this case we are using a custom
                 // layout called R.layout.message for each item
+                dialog.dismiss();
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.list_item_activity, parent, false);
 
