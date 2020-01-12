@@ -13,17 +13,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/title_More"
+            android:text="@string/name"
             android:textSize="22sp"
             android:padding="5dp"
             android:textColor="#5AC3DE"
-            android:layout_marginLeft="20dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/title_More"
-            android:textSize="30sp"
-            android:padding="5dp"
             android:layout_marginLeft="20dp"/>
     </LinearLayout>
 

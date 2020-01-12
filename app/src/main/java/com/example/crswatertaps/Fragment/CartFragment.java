@@ -75,6 +75,7 @@ public class CartFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getActivity(),PlaceOrder.class);
+
                 startActivity(intent);
             }
         });
@@ -118,6 +119,7 @@ public class CartFragment extends Fragment {
             protected void onBindViewHolder(CartViewHolder holder, int position, final CartModel model) {
                 // Bind the Chat object to the ChatHolder
                 // ...
+                Log.d("sdf",""+model);
                 holder.setRow(model);
                 holder.removeButton.setOnClickListener(new View.OnClickListener() {
                     @Override

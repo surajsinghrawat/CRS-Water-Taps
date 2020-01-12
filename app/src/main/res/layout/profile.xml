@@ -22,6 +22,10 @@
         android:layout_marginTop="20dp">
         <include layout="@layout/text_filed"
             android:id="@+id/name"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/name"/>
     </LinearLayout>
 
     <LinearLayout
@@ -29,6 +33,10 @@
         android:layout_height="wrap_content">
         <include layout="@layout/text_filed"
             android:id="@+id/email"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_More"/>
     </LinearLayout>
 
     <LinearLayout
@@ -36,12 +44,20 @@
         android:layout_height="wrap_content">
         <include layout="@layout/text_filed"
             android:id="@+id/number"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_More"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <include layout="@layout/text_filed"
-            />
+            android:id="@+id/text5"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_More"/>
     </LinearLayout>
 
 </LinearLayout>
