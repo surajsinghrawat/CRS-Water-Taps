@@ -51,7 +51,9 @@ public class RegisterActivity extends AppCompatActivity {
                             if (task.isSuccessful())
                             {
                                 Toast.makeText(RegisterActivity.this,"SinUp Successful",Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                                Intent newIntent=new Intent(RegisterActivity.this,MainActivity.class);
+                                startActivity(newIntent);
+//                                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                             }else
                             {
                                 CustomDialogClass.showWarning(RegisterActivity.this, "Registration failed."+"Enter Valid Details", "CANCEL", new CustomDialogClass.WarningResponse() {

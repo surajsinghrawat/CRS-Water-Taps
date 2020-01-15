@@ -1,5 +1,7 @@
 package com.example.crswatertaps.Model;
 
+import java.util.List;
+
 public class CartModel {
     private String id;
     private String imageUrl;
@@ -8,6 +10,7 @@ public class CartModel {
     private String modelId;
     private String seriesId;
     private int quantity;
+
 
     public CartModel() {
     }

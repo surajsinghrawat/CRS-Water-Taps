@@ -42,8 +42,6 @@ public class MoreOptionFragment extends Fragment {
                     "Profile",
                     "About Us",
                     "Contact Us",
-                    "App Settings",
-                    "FeedBack",
                     "Share The App",
                     "Logout",
             };
@@ -52,8 +50,6 @@ public class MoreOptionFragment extends Fragment {
                     "View Profile",
                     "About Us",
                     "Contact Us",
-                    "App Settings",
-                    "Give FeedBack",
                     "Share the app to world",
                     "Logout the application",
             };
@@ -62,8 +58,6 @@ public class MoreOptionFragment extends Fragment {
                     "pro",
                     "abo",
                     "con",
-                    "app",
-                    "fee",
                     "sha",
                     "Log",
             };
@@ -72,8 +66,6 @@ public class MoreOptionFragment extends Fragment {
                     R.drawable.ic_action_name,
                     R.drawable.ic_action_about,
                     R.drawable.ic_action_contact,
-                    R.drawable.ic_action_settings,
-                    R.drawable.ic_action_feedback,
                     R.drawable.ic_action_share,
                     R.drawable.ic_action_logout,
             };

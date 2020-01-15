@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.crswatertaps.Activity.AboutActivity;
+import com.example.crswatertaps.Activity.ContactActivity;
 import com.example.crswatertaps.Activity.MainActivity;
 import com.example.crswatertaps.Activity.ProfileActivity;
 import com.example.crswatertaps.CommonAction.CustomDialogClass;
@@ -54,16 +56,10 @@ public class MoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         userProfile();
                         break;
                     case "abo":
-
+                        aboutUs();
                         break;
                     case "con":
-                        makeToast("coming");
-                        break;
-                    case "app":
-                        makeToast("coming soon");
-                        break;
-                    case "fee":
-                        makeToast("Coming soon");
+                       contactUs();
                         break;
                     case "sha":
                         shareApp();
@@ -89,19 +85,19 @@ public class MoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         makeToast("Coming Soon");
                 }
             }
+
+
         });
     }
 
-    private void openEventAdmin() {
-
+    private void contactUs() {
+        Intent contactIntent=new Intent(context, ContactActivity.class);
+        context.startActivity(contactIntent);
     }
 
-    private void openSecurityAdmin() {
-
-    }
-
-    private void openMeetingAdmin() {
-
+    private void aboutUs() {
+        Intent aboutIntent=new Intent(context, AboutActivity.class);
+        context.startActivity(aboutIntent);
     }
 
     @Override
@@ -144,26 +140,26 @@ public class MoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         }
     }
-    private void DailogBox(){
-        final AlertDialog.Builder alertDialog= new AlertDialog.Builder(context);
-        alertDialog.setMessage("Are You Sure, You Want To Logout");
-        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(context.getApplicationContext(), MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            }
-        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
-        alertDialog.create();
-        alertDialog.show();
-    }
+//    private void DailogBox(){
+//        final AlertDialog.Builder alertDialog= new AlertDialog.Builder(context);
+//        alertDialog.setMessage("Are You Sure, You Want To Logout");
+//        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                FirebaseAuth.getInstance().signOut();
+//                Intent intent = new Intent(context.getApplicationContext(), MainActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                context.startActivity(intent);
+//            }
+//        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                dialogInterface.cancel();
+//            }
+//        });
+//        alertDialog.create();
+//        alertDialog.show();
+//    }
 
     private void shareApp(){
         Intent intent=new Intent(Intent.ACTION_SEND);
