@@ -18,7 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.crswatertaps.CommonAction.NetworkCheck;
+import com.example.crswatertaps.CommonAction.PermissionCheck;
 import com.example.crswatertaps.Fragment.CartFragment;
 import com.example.crswatertaps.Fragment.CategoryFragment;
 import com.example.crswatertaps.Fragment.MoreOptionFragment;
@@ -30,6 +30,8 @@ import java.io.IOException;
 
 public class Main2Activity extends AppCompatActivity {
     //private TextView mTextMessage;
+
+
     private TextView title;
     private int current_position=0;
     private int[] images={R.drawable.crs,R.drawable.crs_taps,R.drawable.t_taps,
@@ -75,6 +77,11 @@ public class Main2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
+        if (!PermissionCheck.checkPermission(this)){
+            PermissionCheck.requestPermission(this);
+        }
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 

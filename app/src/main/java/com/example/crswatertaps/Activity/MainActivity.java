@@ -1,13 +1,8 @@
 package com.example.crswatertaps.Activity;
 
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.crswatertaps.CommonAction.CustomDialogClass;
-import com.example.crswatertaps.CommonAction.NetworkCheck;
+import com.example.crswatertaps.CommonAction.PermissionCheck;
 import com.example.crswatertaps.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,7 +25,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
-    public boolean hasSession = false;
     private TextView email;
     private TextView Password;
     private Button login;
@@ -43,19 +37,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_login);
         setupActionBar("CRS WATER TAPS");
-
+        if (!PermissionCheck.checkPermission(this)){
+            PermissionCheck.requestPermission(this);
+        }
         mAuth = FirebaseAuth.getInstance();
         email = (EditText) findViewById(R.id.etemail);
         Password = (EditText) findViewById(R.id.etpass);
 
-//        FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-//                userID = firebaseUser.getUid();
-//                Log.d("USERID", userID);
-//            }
-//        };
         login = (Button) findViewById(R.id.btnLogin);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,9 +59,8 @@ public class MainActivity extends AppCompatActivity {
                                    public void onComplete(@NonNull Task<AuthResult> task) {
                                        if (task.isSuccessful()) {
                                            dialog.dismiss();
-                                           // Sign in success, update UI with the signed-in user's information
 
-                                           Toast.makeText(MainActivity.this, "Sucessfulll main", Toast.LENGTH_LONG).show();
+                                           Toast.makeText(MainActivity.this, "Successful Login", Toast.LENGTH_LONG).show();
                                            final FirebaseUser firebaseUser = mAuth.getCurrentUser();
                                            assert firebaseUser != null;
                                            userID = firebaseUser.getUid();
@@ -101,8 +88,6 @@ public class MainActivity extends AppCompatActivity {
                                                    Toast.LENGTH_SHORT).show();
 
                                        }
-
-                                       // ...
                                    }
                                });
                    }
@@ -139,12 +124,6 @@ public class MainActivity extends AppCompatActivity {
         }else {
             result=true;
         }
-
-//        if (emil.isEmpty() || pass.isEmpty()) {
-//            Toast.makeText(this, "Please Enter All The Details", Toast.LENGTH_SHORT).show();
-//        } else {
-//            result = true;
-//        }
         return result;
     }
 
@@ -174,24 +153,5 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setTitle(title);
         }
     }
-//private BroadcastReceiver receiver=new BroadcastReceiver() {
-//    @Override
-//    public void onReceive(Context context, Intent intent) {
-//        if (NetworkCheck.isOnline(MainActivity.this)){
-//            CustomDialogClass.showWarning(MainActivity.this, "There is No Internet Connection", "Ok", new CustomDialogClass.WarningResponse() {
-//                @Override
-//                public void onPositive() {
-//
-//                }
-//
-//                @Override
-//                public void onNegative() {
-//
-//                }
-//            });
-//        }
-//    }
-//};
-
 
 }

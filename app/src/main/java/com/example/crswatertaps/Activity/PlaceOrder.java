@@ -1,5 +1,6 @@
 package com.example.crswatertaps.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,11 +9,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 import com.example.crswatertaps.CommonAction.CustomDialogClass;
+import com.example.crswatertaps.CommonAction.RequestClass;
 import com.example.crswatertaps.Model.CartModel;
-import com.example.crswatertaps.Model.ModelClass;
 import com.example.crswatertaps.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,10 +28,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
 public class PlaceOrder extends AppCompatActivity {
 
@@ -35,16 +41,12 @@ public class PlaceOrder extends AppCompatActivity {
     Button submit;
     CartModel data;
     public static final String TAG = "DATA";
-    FirebaseAuth mAuth;
-    FirebaseDatabase database;
     DatabaseReference mReference;
-    List<CartModel> cartModelList;
     HashMap<String, String> map1 = new HashMap<>();
-    HashMap<String,String>map=new HashMap<>();
-    ArrayList<String>item=new ArrayList<>();
-    ArrayList<String>item2=new ArrayList<>();
+    HashMap<String, String> map = new HashMap<>();
+    ArrayList<String> item = new ArrayList<>();
     StringBuilder errorBuilder;
-    public boolean flag=false;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,21 +69,19 @@ public class PlaceOrder extends AppCompatActivity {
 
 
         dataFromFirebase();
-        itemList();
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (validateForm()){
+                if (validateForm()) {
                     submitdata();
-                }else {
-                    CustomDialogClass.showWarning(PlaceOrder.this,errorBuilder.toString(),"Ok",null);
+                } else {
+                    CustomDialogClass.showWarning(PlaceOrder.this, errorBuilder.toString(), "Ok", null);
                 }
             }
         });
 
     }
-
 
 
     private void dataFromFirebase() {
@@ -96,10 +96,10 @@ public class PlaceOrder extends AppCompatActivity {
                     data = item.getValue(CartModel.class);
                     CartModel respons = data;
                     getData(respons);
-
                 }
 
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -109,118 +109,117 @@ public class PlaceOrder extends AppCompatActivity {
     }
 
     private void getData(CartModel respons) {
-        CartModel list=respons;
-        itemName = list.getName();
-        itemDetails=""+list.getModelId()+list.getSeriesId();
-        itemPrice= String.valueOf(list.getPrice());
-        itemQuantity= String.valueOf(list.getQuantity());
+        CartModel list = respons;
+//        itemName = list.getName();
+//        itemDetails = "" + list.getModelId() + list.getSeriesId();
+//        itemPrice = String.valueOf(list.getPrice());
+//        itemQuantity = String.valueOf(list.getQuantity());
 
-//            map.put("item_name",list.getName());
-//            map.put("details",list.getModelId()+list.getSeriesId());
-//            map.put("price", String.valueOf(list.getPrice()));
-//            map.put("quentity", String.valueOf(list.getQuantity()));
+        map.put("item_name", list.getName());
+        map.put("details", list.getModelId() + list.getSeriesId());
+        map.put("price", String.valueOf(list.getPrice()));
+        map.put("quentity", String.valueOf(list.getQuantity()));
+        item.add(String.valueOf(map));
 
-
-        item.add(0,list.getName());
-        item.add(0,list.getModelId()+list.getSeriesId());
-        item.add(0,String.valueOf(list.getPrice()));
-        item.add(0,String.valueOf(list.getQuantity()));
-
-
-        Log.d("asd",""+item);
 
 
     }
 
 
-    private void itemList(){
-//
-//            Iterator<String>iterator=item.iterator();
-//            while (iterator.hasNext()){
-//                map.put("itemName", item.get(0));
-//            }
-//            Log.d(  TAG, String.valueOf(map));
-
-
-    }
-
-
-    private boolean validateForm(){
+    private boolean validateForm() {
         boolean valid = true;
 
         errorBuilder = new StringBuilder();
 
         name = customerName.getText().toString();
         if (name.isEmpty()) {
-            errorBuilder.append("Name Is Empty"+"\n");
+            errorBuilder.append("Name Is Empty" + "\n");
             valid = false;
         }
 
         company = companyName.getText().toString();
         if (company.isEmpty()) {
-            errorBuilder.append("Company Name Is Empty"+"\n");
+            errorBuilder.append("Company Name Is Empty" + "\n");
             valid = false;
         }
 
         gstNumber = gstNo.getText().toString();
         if (gstNumber.isEmpty()) {
-            errorBuilder.append("GST Number Is Empty"+"\n");
+            errorBuilder.append("GST Number Is Empty" + "\n");
             valid = false;
         }
 
         fulladdress = address.getText().toString();
         if (fulladdress.isEmpty()) {
-            errorBuilder.append("Address Is Empty"+"\n");
+            errorBuilder.append("Address Is Empty" + "\n");
             valid = false;
         }
 
         pin = pinCode.getText().toString();
         if (pin.isEmpty()) {
-            errorBuilder.append("Pin Code Is Empty"+"\n");
+            errorBuilder.append("Pin Code Is Empty" + "\n");
             valid = false;
         }
         phoneNo = mobileNo.getText().toString();
         if (phoneNo.isEmpty()) {
-            errorBuilder.append("Mobile Number Is Empty"+"\n");
+            errorBuilder.append("Mobile Number Is Empty" + "\n");
             valid = false;
         }
-
 
 
         return valid;
     }
 
 
-
-
-
-
-
     private void submitdata() {
 
 
-        map1.put("name",name);
-        map1.put("shop_name",company);
-        map1.put("mobile",phoneNo);
-        map1.put("gst_no",gstNumber);
-        map1.put("address",fulladdress);
-        map1.put("pincode",pin);
-        map1.put("customer_email",email);
+        map1.put("name", name);
+        map1.put("shop_name", company);
+        map1.put("mobile", phoneNo);
+        map1.put("gst_no", gstNumber);
+        map1.put("address", fulladdress);
+        map1.put("pincode", pin);
+        map1.put("customer_email", email);
+        map1.put("items", String.valueOf(item));
 
+        RequestClass request=new RequestClass(Request.Method.POST, new JSONObject(map), new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
 
-//        map1.put("itemName", item.get(0));
-//        map1.put("itemDetails", item.get(1));
-//        map1.put("itemPrice", item.get(2));
-//        map1.put("itemQuantity", item.get(3));
-        map1.put("itemName",item.get(0));
+                CustomDialogClass.showDialog(PlaceOrder.this, "Order Place", "Ok", "", new CustomDialogClass.WarningResponse() {
+                    @Override
+                    public void onPositive() {
 
+                        customerName.setText("");
+                        companyName.setText("");
+                        gstNo.setText("");
+                        address.setText("");
+                        pinCode.setText("");
+                        mobileNo.setText("");
+                    }
 
-//        map1.put("items", itemName);
-//
-//        map1.put("details",itemDetails);
-//        map1.put("quentity",itemQuantity);
-//        map1.put("price",itemPrice);
-//
+                    @Override
+                    public void onNegative() {
+
+                    }
+                });
+
+                Log.d(TAG,response.toString());
+                Intent intent = new Intent(PlaceOrder.this, Main2Activity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(PlaceOrder.this, "Error"+error, Toast.LENGTH_SHORT).show();
+            }
+        },PlaceOrder.this);
+
+        RequestQueue queue= Volley.newRequestQueue(PlaceOrder.this);
+        queue.add(request);
+
 
         Log.d(TAG, String.valueOf(map1));
 
