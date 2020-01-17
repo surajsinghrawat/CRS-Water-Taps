@@ -1,5 +1,6 @@
 package com.example.crswatertaps.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -46,6 +47,8 @@ public class PlaceOrder extends AppCompatActivity {
     HashMap<String, String> map = new HashMap<>();
     ArrayList<String> item = new ArrayList<>();
     StringBuilder errorBuilder;
+    FirebaseAuth mAuth;
+    FirebaseDatabase database;
 
 
     @Override
@@ -182,21 +185,28 @@ public class PlaceOrder extends AppCompatActivity {
         map1.put("pincode", pin);
         map1.put("customer_email", email);
         map1.put("items", String.valueOf(item));
-
-        RequestClass request=new RequestClass(Request.Method.POST, new JSONObject(map), new Response.Listener<JSONObject>() {
+        final ProgressDialog dialog = ProgressDialog.show(this, "", "");
+        RequestClass request=new RequestClass(Request.Method.POST, new JSONObject(map1), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
+                dialog.dismiss();
                 CustomDialogClass.showDialog(PlaceOrder.this, "Order Place", "Ok", "", new CustomDialogClass.WarningResponse() {
                     @Override
                     public void onPositive() {
 
-                        customerName.setText("");
-                        companyName.setText("");
-                        gstNo.setText("");
-                        address.setText("");
-                        pinCode.setText("");
-                        mobileNo.setText("");
+                       DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Place_Order").child(UnicID);
+                       reference.setValue(map1);
+
+
+//                        customerName.setText("");
+//                        companyName.setText("");
+//                        gstNo.setText("");
+//                        address.setText("");
+//                        pinCode.setText("");
+//                        mobileNo.setText("");
+                        Intent intent = new Intent(PlaceOrder.this, Main2Activity.class);
+                        startActivity(intent);
+                        finish();
                     }
 
                     @Override
@@ -204,11 +214,9 @@ public class PlaceOrder extends AppCompatActivity {
 
                     }
                 });
-
+                Log.d(TAG, String.valueOf(map1));
                 Log.d(TAG,response.toString());
-                Intent intent = new Intent(PlaceOrder.this, Main2Activity.class);
-                startActivity(intent);
-                finish();
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -219,10 +227,6 @@ public class PlaceOrder extends AppCompatActivity {
 
         RequestQueue queue= Volley.newRequestQueue(PlaceOrder.this);
         queue.add(request);
-
-
-        Log.d(TAG, String.valueOf(map1));
-
     }
 
 }
