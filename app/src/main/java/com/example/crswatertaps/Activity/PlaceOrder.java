@@ -16,6 +16,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.crswatertaps.CommonAction.CustomDialogClass;
 import com.example.crswatertaps.CommonAction.RequestClass;
@@ -29,27 +30,35 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class PlaceOrder extends AppCompatActivity {
 
     EditText customerName, companyName, gstNo, address, pinCode, mobileNo;
-    String name, company, gstNumber, fulladdress, email, UnicID, itemName, itemDetails, itemPrice, itemQuantity;
+    String name, company, gstNumber, fulladdress, email, UnicID;
     String pin, phoneNo;
     Button submit;
-    CartModel data;
+    List<CartModel>list=new ArrayList<>();
     public static final String TAG = "DATA";
     DatabaseReference mReference;
     HashMap<String, String> map1 = new HashMap<>();
     HashMap<String, String> map = new HashMap<>();
-    ArrayList<String> item = new ArrayList<>();
-    StringBuilder errorBuilder;
-    FirebaseAuth mAuth;
-    FirebaseDatabase database;
+    ArrayList<String> item = new ArrayList<String>();
 
+    StringBuilder errorBuilder;
+    JSONObject obj = new JSONObject();
+
+    JSONArray array = new JSONArray();
+    CartModel respond;
+    List<CartModel>cartModelList;
+
+    public static final String server="https://crsmailfunction.herokuapp.com/api/mail/";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,7 +70,7 @@ public class PlaceOrder extends AppCompatActivity {
             UnicID = firebaseUser.getUid();
         }
 
-
+        cartModelList=new ArrayList<>();
         customerName = findViewById(R.id.etUserName);
         companyName = findViewById(R.id.companyName);
         gstNo = findViewById(R.id.gstNo);
@@ -77,7 +86,11 @@ public class PlaceOrder extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (validateForm()) {
-                    submitdata();
+                    try {
+                        submitdata();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     CustomDialogClass.showWarning(PlaceOrder.this, errorBuilder.toString(), "Ok", null);
                 }
@@ -91,16 +104,35 @@ public class PlaceOrder extends AppCompatActivity {
 
         mReference = FirebaseDatabase.getInstance().getReference("cart").child(UnicID);
 
+
+
         mReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot item : dataSnapshot.getChildren()) {
-                    data = item.getValue(CartModel.class);
-                    CartModel respons = data;
-                    getData(respons);
-                }
+                    CartModel data = item.getValue(CartModel.class);
+                    cartModelList.add(data);
+                     respond = data;
+                    assert respond != null;
+                    try {
+                        obj.put("item_name", respond.getName());
+                        obj.put("details", respond.getModelId() + respond.getSeriesId());
+                        obj.put("quentity", respond.getQuantity());
+                        obj.put("price",respond.getPrice());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
+                    array.put(obj);
+
+                    try {
+                        getData(respond);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
             }
 
             @Override
@@ -111,18 +143,20 @@ public class PlaceOrder extends AppCompatActivity {
 
     }
 
-    private void getData(CartModel respons) {
-        CartModel list = respons;
-//        itemName = list.getName();
-//        itemDetails = "" + list.getModelId() + list.getSeriesId();
-//        itemPrice = String.valueOf(list.getPrice());
-//        itemQuantity = String.valueOf(list.getQuantity());
+    private void getData(CartModel respond) throws JSONException {
+        list.add(respond);
 
-        map.put("item_name", list.getName());
-        map.put("details", list.getModelId() + list.getSeriesId());
-        map.put("price", String.valueOf(list.getPrice()));
-        map.put("quentity", String.valueOf(list.getQuantity()));
+        map.put("item_name", respond.getName());
+        map.put("details", respond.getModelId() + respond.getSeriesId());
+        map.put("quentity", String.valueOf(respond.getQuantity()));
+        map.put("price", String.valueOf(respond.getPrice()));
+
         item.add(String.valueOf(map));
+//        obj.put("item_name", respond.getName());
+//        obj.put("details", respond.getModelId() + respond.getSeriesId());
+//        obj.put("quentity", respond.getQuantity());
+//        obj.put("price",respond.getPrice());
+//        array.put(obj);
 
 
 
@@ -174,36 +208,43 @@ public class PlaceOrder extends AppCompatActivity {
     }
 
 
-    private void submitdata() {
+    private void submitdata() throws JSONException {
+//        for (int i = 0; i <cartModelList.size() ; i++) {
+//            obj.put("item_name", cartModelList.get(i).getName());
+//            obj.put("details", cartModelList.get(i).getModelId() + cartModelList.get(i).getSeriesId());
+//            obj.put("quentity", cartModelList.get(i).getQuantity());
+//            obj.put("price", cartModelList.get(i).getPrice());
+//            array.put(obj);
+//        }
+
+       // array.put(item);
+        Log.d("DTA",list.toString());
 
 
-        map1.put("name", name);
-        map1.put("shop_name", company);
-        map1.put("mobile", phoneNo);
-        map1.put("gst_no", gstNumber);
-        map1.put("address", fulladdress);
-        map1.put("pincode", pin);
-        map1.put("customer_email", email);
-        map1.put("items", String.valueOf(item));
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("name", name);
+            jsonObject.put("shop_name", company);
+            jsonObject.put("mobile", phoneNo);
+            jsonObject.put("gst_no", gstNumber);
+            jsonObject.put("address", fulladdress);
+            jsonObject.put("pincode", pin);
+            jsonObject.put("customer_email", email);
+            jsonObject.put("items", array);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         final ProgressDialog dialog = ProgressDialog.show(this, "", "");
-        RequestClass request=new RequestClass(Request.Method.POST, new JSONObject(map1), new Response.Listener<JSONObject>() {
+        JsonObjectRequest request=new JsonObjectRequest(Request.Method.POST, server, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 dialog.dismiss();
+                Log.d(TAG,response.toString());
                 CustomDialogClass.showDialog(PlaceOrder.this, "Order Place", "Ok", "", new CustomDialogClass.WarningResponse() {
                     @Override
                     public void onPositive() {
-
-                       DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Place_Order").child(UnicID);
-                       reference.setValue(map1);
-
-
-//                        customerName.setText("");
-//                        companyName.setText("");
-//                        gstNo.setText("");
-//                        address.setText("");
-//                        pinCode.setText("");
-//                        mobileNo.setText("");
                         Intent intent = new Intent(PlaceOrder.this, Main2Activity.class);
                         startActivity(intent);
                         finish();
@@ -214,8 +255,6 @@ public class PlaceOrder extends AppCompatActivity {
 
                     }
                 });
-                Log.d(TAG, String.valueOf(map1));
-                Log.d(TAG,response.toString());
 
             }
         }, new Response.ErrorListener() {
@@ -223,10 +262,49 @@ public class PlaceOrder extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(PlaceOrder.this, "Error"+error, Toast.LENGTH_SHORT).show();
             }
-        },PlaceOrder.this);
-
+        });
+//        RequestClass request=new RequestClass(Request.Method.POST, new JSONObject(jsonObject), new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                dialog.dismiss();
+//                CustomDialogClass.showDialog(PlaceOrder.this, "Order Place", "Ok", "", new CustomDialogClass.WarningResponse() {
+//                    @Override
+//                    public void onPositive() {
+//
+////                       DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Place_Order").child(UnicID);
+////                       reference.setValue(map1);
+//
+//
+////                        customerName.setText("");
+////                        companyName.setText("");
+////                        gstNo.setText("");
+////                        address.setText("");
+////                        pinCode.setText("");
+////                        mobileNo.setText("");
+//                        Intent intent = new Intent(PlaceOrder.this, Main2Activity.class);
+//                        startActivity(intent);
+//                        finish();
+//                    }
+//
+//                    @Override
+//                    public void onNegative() {
+//
+//                    }
+//                });
+//                Log.d(TAG, String.valueOf(map1));
+//                Log.d(TAG,response.toString());
+//
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Toast.makeText(PlaceOrder.this, "Error"+error, Toast.LENGTH_SHORT).show();
+//            }
+//        },PlaceOrder.this);
+//
         RequestQueue queue= Volley.newRequestQueue(PlaceOrder.this);
         queue.add(request);
+        Log.d(TAG, String.valueOf(jsonObject));
     }
 
 }
