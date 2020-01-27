@@ -47,16 +47,20 @@ public class PlaceOrder extends AppCompatActivity {
     List<CartModel>list=new ArrayList<>();
     public static final String TAG = "DATA";
     DatabaseReference mReference;
-    HashMap<String, String> map1 = new HashMap<>();
+    HashMap<String, Object> map1 = new HashMap<>();
     HashMap<String, String> map = new HashMap<>();
     ArrayList<String> item = new ArrayList<String>();
+    List item3=new ArrayList();
 
     StringBuilder errorBuilder;
-    JSONObject obj = new JSONObject();
+
+
 
     JSONArray array = new JSONArray();
     CartModel respond;
-    List<CartModel>cartModelList;
+    List<CartModel> cartModelList;
+
+
 
     public static final String server="https://crsmailfunction.herokuapp.com/api/mail/";
 
@@ -70,7 +74,7 @@ public class PlaceOrder extends AppCompatActivity {
             UnicID = firebaseUser.getUid();
         }
 
-        cartModelList=new ArrayList<>();
+        cartModelList=new ArrayList<CartModel>();
         customerName = findViewById(R.id.etUserName);
         companyName = findViewById(R.id.companyName);
         gstNo = findViewById(R.id.gstNo);
@@ -113,26 +117,11 @@ public class PlaceOrder extends AppCompatActivity {
                 for (DataSnapshot item : dataSnapshot.getChildren()) {
                     CartModel data = item.getValue(CartModel.class);
                     cartModelList.add(data);
-                     respond = data;
+                    respond = data;
                     assert respond != null;
-                    try {
-                        obj.put("item_name", respond.getName());
-                        obj.put("details", respond.getModelId() + respond.getSeriesId());
-                        obj.put("quentity", respond.getQuantity());
-                        obj.put("price",respond.getPrice());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    array.put(obj);
-
-                    try {
-                        getData(respond);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
 
                 }
+                    getData(cartModelList);
             }
 
             @Override
@@ -143,23 +132,33 @@ public class PlaceOrder extends AppCompatActivity {
 
     }
 
-    private void getData(CartModel respond) throws JSONException {
-        list.add(respond);
+    private void getData(List<CartModel> cartModelList) {
+        Log.d(TAG, "getData: "+cartModelList);
+        List<CartModel>data=cartModelList;
+        int i=0;
+        while (i<cartModelList.size()){
+            JSONObject obj = new JSONObject();
+            try {
+                    obj.put("item_name", data.get(i).getName());
+                obj.put("details", data.get(i).getModelId() + data.get(i).getSeriesId());
+                obj.put("quentity", data.get(i).getQuantity());
+                obj.put("price", data.get(i).getPrice());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            map.put("item_name", data.get(i).getName());
+            map.put("details", data.get(i).getModelId());
+            map.put("quentity", String.valueOf(data.get(i).getQuantity()));
+            map.put("price", String.valueOf(data.get(i).getPrice()));
 
-        map.put("item_name", respond.getName());
-        map.put("details", respond.getModelId() + respond.getSeriesId());
-        map.put("quentity", String.valueOf(respond.getQuantity()));
-        map.put("price", String.valueOf(respond.getPrice()));
+               item.add(String.valueOf(map));
+            array.put(obj);
+                item3.add(map);
+                i++;
+        }
 
-        item.add(String.valueOf(map));
-//        obj.put("item_name", respond.getName());
-//        obj.put("details", respond.getModelId() + respond.getSeriesId());
-//        obj.put("quentity", respond.getQuantity());
-//        obj.put("price",respond.getPrice());
-//        array.put(obj);
-
-
-
+//        array.put(item);
+        Log.d(TAG, "on "+array);
     }
 
 
@@ -209,35 +208,32 @@ public class PlaceOrder extends AppCompatActivity {
 
 
     private void submitdata() throws JSONException {
-//        for (int i = 0; i <cartModelList.size() ; i++) {
-//            obj.put("item_name", cartModelList.get(i).getName());
-//            obj.put("details", cartModelList.get(i).getModelId() + cartModelList.get(i).getSeriesId());
-//            obj.put("quentity", cartModelList.get(i).getQuantity());
-//            obj.put("price", cartModelList.get(i).getPrice());
-//            array.put(obj);
+
+        final JSONObject jsonObject = new JSONObject();
+     //   try {
+        jsonObject.put("name", name);
+        jsonObject.put("shop_name", company);
+        jsonObject.put("mobile", phoneNo);
+        jsonObject.put("gst_no", gstNumber);
+        jsonObject.put("address", fulladdress);
+        jsonObject.put("pincode", pin);
+        jsonObject.put("customer_email", email);
+        jsonObject.put("items",array);
+
+//        } catch (JSONException e) {
+//            e.printStackTrace();
 //        }
-
-       // array.put(item);
-        Log.d("DTA",list.toString());
-
-
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("name", name);
-            jsonObject.put("shop_name", company);
-            jsonObject.put("mobile", phoneNo);
-            jsonObject.put("gst_no", gstNumber);
-            jsonObject.put("address", fulladdress);
-            jsonObject.put("pincode", pin);
-            jsonObject.put("customer_email", email);
-            jsonObject.put("items", array);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        map1.put("name", name);
+        map1.put("shop_name", company);
+        map1.put("mobile", phoneNo);
+        map1.put("gst_no", gstNumber);
+        map1.put("address", fulladdress);
+        map1.put("pincode", pin);
+        map1.put("customer_email", email);
+        map1.put("items", array);
 
         final ProgressDialog dialog = ProgressDialog.show(this, "", "");
-        JsonObjectRequest request=new JsonObjectRequest(Request.Method.POST, server, jsonObject, new Response.Listener<JSONObject>() {
+/*        JsonObjectRequest request=new JsonObjectRequest(Request.Method.POST, server, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 dialog.dismiss();
@@ -262,46 +258,47 @@ public class PlaceOrder extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(PlaceOrder.this, "Error"+error, Toast.LENGTH_SHORT).show();
             }
-        });
-//        RequestClass request=new RequestClass(Request.Method.POST, new JSONObject(jsonObject), new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                dialog.dismiss();
-//                CustomDialogClass.showDialog(PlaceOrder.this, "Order Place", "Ok", "", new CustomDialogClass.WarningResponse() {
-//                    @Override
-//                    public void onPositive() {
-//
-////                       DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Place_Order").child(UnicID);
-////                       reference.setValue(map1);
-//
-//
-////                        customerName.setText("");
-////                        companyName.setText("");
-////                        gstNo.setText("");
-////                        address.setText("");
-////                        pinCode.setText("");
-////                        mobileNo.setText("");
-//                        Intent intent = new Intent(PlaceOrder.this, Main2Activity.class);
-//                        startActivity(intent);
-//                        finish();
-//                    }
-//
-//                    @Override
-//                    public void onNegative() {
-//
-//                    }
-//                });
-//                Log.d(TAG, String.valueOf(map1));
-//                Log.d(TAG,response.toString());
-//
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(PlaceOrder.this, "Error"+error, Toast.LENGTH_SHORT).show();
-//            }
-//        },PlaceOrder.this);
-//
+        });*/
+        RequestClass request=new RequestClass(Request.Method.POST, new JSONObject(map1), new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                dialog.dismiss();
+                CustomDialogClass.showDialog(PlaceOrder.this, "Order Place", "Ok", "", new CustomDialogClass.WarningResponse() {
+                    @Override
+                    public void onPositive() {
+
+//                       DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Place_Order").child(UnicID);
+//                       reference.setValue(map1);
+                        DatabaseReference reference=FirebaseDatabase.getInstance().getReference();
+                        reference.child("cart").child(UnicID).setValue(null);
+
+//                        customerName.setText("");
+//                        companyName.setText("");
+//                        gstNo.setText("");
+//                        address.setText("");
+//                        pinCode.setText("");
+//                        mobileNo.setText("");
+                        Intent intent = new Intent(PlaceOrder.this, Main2Activity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onNegative() {
+
+                    }
+                });
+                Log.d(TAG, String.valueOf(map1));
+                Log.d(TAG,response.toString());
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(PlaceOrder.this, "Error"+error, Toast.LENGTH_SHORT).show();
+            }
+        },PlaceOrder.this);
+
         RequestQueue queue= Volley.newRequestQueue(PlaceOrder.this);
         queue.add(request);
         Log.d(TAG, String.valueOf(jsonObject));
