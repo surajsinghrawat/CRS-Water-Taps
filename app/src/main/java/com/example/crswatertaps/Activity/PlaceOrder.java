@@ -49,8 +49,6 @@ public class PlaceOrder extends AppCompatActivity {
     DatabaseReference mReference;
     HashMap<String, Object> map1 = new HashMap<>();
     HashMap<String, String> map = new HashMap<>();
-    ArrayList<String> item = new ArrayList<String>();
-    List item3=new ArrayList();
 
     StringBuilder errorBuilder;
 
@@ -133,7 +131,7 @@ public class PlaceOrder extends AppCompatActivity {
     }
 
     private void getData(List<CartModel> cartModelList) {
-        Log.d(TAG, "getData: "+cartModelList);
+
         List<CartModel>data=cartModelList;
         int i=0;
         while (i<cartModelList.size()){
@@ -146,18 +144,10 @@ public class PlaceOrder extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            map.put("item_name", data.get(i).getName());
-            map.put("details", data.get(i).getModelId());
-            map.put("quentity", String.valueOf(data.get(i).getQuantity()));
-            map.put("price", String.valueOf(data.get(i).getPrice()));
-
-               item.add(String.valueOf(map));
             array.put(obj);
-                item3.add(map);
                 i++;
         }
 
-//        array.put(item);
         Log.d(TAG, "on "+array);
     }
 
@@ -209,20 +199,6 @@ public class PlaceOrder extends AppCompatActivity {
 
     private void submitdata() throws JSONException {
 
-        final JSONObject jsonObject = new JSONObject();
-     //   try {
-        jsonObject.put("name", name);
-        jsonObject.put("shop_name", company);
-        jsonObject.put("mobile", phoneNo);
-        jsonObject.put("gst_no", gstNumber);
-        jsonObject.put("address", fulladdress);
-        jsonObject.put("pincode", pin);
-        jsonObject.put("customer_email", email);
-        jsonObject.put("items",array);
-
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
         map1.put("name", name);
         map1.put("shop_name", company);
         map1.put("mobile", phoneNo);
@@ -233,32 +209,6 @@ public class PlaceOrder extends AppCompatActivity {
         map1.put("items", array);
 
         final ProgressDialog dialog = ProgressDialog.show(this, "", "");
-/*        JsonObjectRequest request=new JsonObjectRequest(Request.Method.POST, server, jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                dialog.dismiss();
-                Log.d(TAG,response.toString());
-                CustomDialogClass.showDialog(PlaceOrder.this, "Order Place", "Ok", "", new CustomDialogClass.WarningResponse() {
-                    @Override
-                    public void onPositive() {
-                        Intent intent = new Intent(PlaceOrder.this, Main2Activity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-
-                    @Override
-                    public void onNegative() {
-
-                    }
-                });
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(PlaceOrder.this, "Error"+error, Toast.LENGTH_SHORT).show();
-            }
-        });*/
         RequestClass request=new RequestClass(Request.Method.POST, new JSONObject(map1), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -272,12 +222,12 @@ public class PlaceOrder extends AppCompatActivity {
                         DatabaseReference reference=FirebaseDatabase.getInstance().getReference();
                         reference.child("cart").child(UnicID).setValue(null);
 
-//                        customerName.setText("");
-//                        companyName.setText("");
-//                        gstNo.setText("");
-//                        address.setText("");
-//                        pinCode.setText("");
-//                        mobileNo.setText("");
+                        customerName.setText("");
+                        companyName.setText("");
+                        gstNo.setText("");
+                        address.setText("");
+                        pinCode.setText("");
+                        mobileNo.setText("");
                         Intent intent = new Intent(PlaceOrder.this, Main2Activity.class);
                         startActivity(intent);
                         finish();
@@ -301,7 +251,6 @@ public class PlaceOrder extends AppCompatActivity {
 
         RequestQueue queue= Volley.newRequestQueue(PlaceOrder.this);
         queue.add(request);
-        Log.d(TAG, String.valueOf(jsonObject));
     }
 
 }
