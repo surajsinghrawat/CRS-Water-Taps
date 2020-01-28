@@ -22,9 +22,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     TextView name, email, mobile, company;
     String userName, userEmail, userMobile, userData;
-    User user;
+    User userDetails;
     DatabaseReference mReference;
-    private String UnicID;
+    String UnicID;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,21 +46,11 @@ public class ProfileActivity extends AppCompatActivity {
     private void dataFromFirebase() {
 
         mReference = FirebaseDatabase.getInstance().getReference("User");
-
-
-
-        mReference.addValueEventListener(new ValueEventListener() {
+        mReference.child(UnicID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot item : dataSnapshot.getChildren()) {
-                   User user = item.getValue(User.class);
-
-                    Log.d("DATA", "onDataChange: "+user);
-                    setData(user);
-
-                }
-
+                User user = dataSnapshot.getValue(User.class);
+                setData(user);
             }
 
             @Override
@@ -68,6 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
+
 
     }
 
@@ -87,14 +78,14 @@ public class ProfileActivity extends AppCompatActivity {
             userData = firebaseUser.getProviderId();
         }
 
-User data=user;
+        User data = user;
 
         email.setText(userEmail);
 
         name.setText(data.getName());
         mobile.setText(data.getNumber());
         company.setText(data.getLastName());
-        Log.d("DATA", "setData: "+data);
+        Log.d("DATA", "setData: " + data);
 
     }
 
