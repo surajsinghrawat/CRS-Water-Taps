@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:768522167046:android:84d222d01c576ce2",
         "android_client_info": {
-          "package_name": "com.example.crswatertaps"
+          "package_name": "com.crs.crswatertaps"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "768522167046-f4p8k45bgocqd5p65li2ci4j9t9vmp8p.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.crswatertaps",
+            "package_name": "com.crs.crswatertaps",
             "certificate_hash": "76e270d23abf229295489c7ce82baba5bb20ac6c"
           }
         },
